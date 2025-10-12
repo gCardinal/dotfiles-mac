@@ -3,3 +3,5 @@ font-size = 14
 
 keybind = global:super+;=toggle_visibility
 keybind = shift+enter=text:\x1b\r
+
+theme = Catppuccin Frappe
