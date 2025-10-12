@@ -8,3 +8,5 @@ keybind = global:super+;=toggle_visibility
 keybind = shift+enter=text:\x1b\r
 
 theme = Catppuccin Frappe
+background-opacity = 0.8
+background-blur = 12
