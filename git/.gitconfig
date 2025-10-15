@@ -1,0 +1,4 @@
+[includeIf "gitdir:~/dev/sprout/"]
+  path = .gitconfig-sprout
+[includeIf "gitdir:~/dev/personal/"]
+  path = .gitconfig-personal

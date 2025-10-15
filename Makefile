@@ -2,3 +2,6 @@
 install:
 	ln -sf $(shell pwd)/ghostty/config ${HOME}/.config/ghostty/config
 	ln -sf $(shell pwd)/zsh/.zshrc ${HOME}/.zshrc
+	ln -sf $(shell pwd)/git/.gitconfig ${HOME}/.gitconfig
+	ln -sf $(shell pwd)/git/.gitconfig-personal ${HOME}/.gitconfig-personal
+	ln -sf $(shell pwd)/git/.gitconfig-sprout ${HOME}/.gitconfig-sprout

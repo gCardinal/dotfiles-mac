@@ -1,0 +1,6 @@
+[user]
+name = Guyllaume Cardinal
+email = guyllaume@sproutfamily.ca
+
+[core]
+sshCommand = ssh -i ~/.ssh/id_sprout
