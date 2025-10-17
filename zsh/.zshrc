@@ -9,6 +9,7 @@ zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/aws", from:oh-my-zsh
 zplug "plugins/nvm", from:oh-my-zsh
 zplug "plugins/thefuck", from:oh-my-zsh
+zplug "MichaelAquilina/zsh-you-should-use"
 
 # install plugins if they are not already
 if ! zplug check; then
