@@ -1,6 +1,0 @@
-[user]
-name = Guyllaume Cardinal
-email = guyllaume.cardinal@gmail.com
-
-[core]
-sshCommand = ssh -i ~/.ssh/id_personal
