@@ -1,9 +1,10 @@
 [user]
-name = Guyllaume Cardinal
-email = guyllaume.cardinal@gmail.com
+    name = Guyllaume Cardinal
+    email = guyllaume.cardinal@gmail.com
 
 [core]
-sshCommand = ssh -i ~/.ssh/id_personal
+    sshCommand = ssh -i ~/.ssh/id_personal
+    autocrlf = input
 
 [pull]
 	rebase = false
