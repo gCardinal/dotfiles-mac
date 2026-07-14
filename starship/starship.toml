@@ -1,0 +1,6 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = "$all$time$line_break$jobs$battery$status$shell$character"
+
+[time]
+disabled = false
