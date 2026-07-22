@@ -1,0 +1,21 @@
+{
+  "model": "sonnet",
+  "statusLine": {
+    "type": "command",
+    "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name'); used=$(echo \"$input\" | jq -r '.context_window.used_percentage // empty'); remaining=$(echo \"$input\" | jq -r '.context_window.remaining_percentage // empty'); total=$(echo \"$input\" | jq -r '.context_window.total_input_tokens'); size=$(echo \"$input\" | jq -r '.context_window.context_window_size'); if [ -n \"$used\" ]; then printf \"%s | tokens: %s / %s (%s%% used, %s%% left)\" \"$model\" \"$total\" \"$size\" \"$(printf '%.0f' \"$used\")\" \"$(printf '%.0f' \"$remaining\")\"; else printf \"%s\" \"$model\"; fi"
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
+  "awaySummaryEnabled": false,
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "switchModelsOnFlag": false,
+  "useAutoModeDuringPlan": false,
+  "permissions": {
+    "allow": [
+      "Bash(gh issue view *)",
+      "Bash(gh issue list *)"
+    ]
+  }
+}
