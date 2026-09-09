@@ -1,8 +1,108 @@
 {
-  "model": "sonnet",
+  "permissions": {
+    "allow": [
+      "Bash(gh issue view *)",
+      "Bash(gh issue list *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr view *)",
+      "Bash(gh issue comment *)"
+    ],
+    "defaultMode": "auto"
+  },
+  "model": "opus[1m]",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'h=\"$HARNESS_TERMINAL_ID\"; [ -z \"$h\" ] && h=\"$CLAUDE_HARNESS_ID\"; [ -z \"$h\" ] && exit 0; d=/tmp/harness-status; f=\"$d/$h.ndjson\"; mkdir -p \"$(dirname \"$f\")\"; p=$(cat); [ -z \"$p\" ] && p=null; printf \"{\\\"event\\\":\\\"UserPromptSubmit\\\",\\\"ts\\\":%s,\\\"payload\\\":%s}\\n\" \"$(date +%s)\" \"$p\" >> \"$f\"'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'h=\"$HARNESS_TERMINAL_ID\"; [ -z \"$h\" ] && h=\"$CLAUDE_HARNESS_ID\"; [ -z \"$h\" ] && exit 0; d=/tmp/harness-status; f=\"$d/$h.ndjson\"; mkdir -p \"$(dirname \"$f\")\"; p=$(cat); [ -z \"$p\" ] && p=null; printf \"{\\\"event\\\":\\\"PreToolUse\\\",\\\"ts\\\":%s,\\\"payload\\\":%s}\\n\" \"$(date +%s)\" \"$p\" >> \"$f\"'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'h=\"$HARNESS_TERMINAL_ID\"; [ -z \"$h\" ] && h=\"$CLAUDE_HARNESS_ID\"; [ -z \"$h\" ] && exit 0; d=/tmp/harness-status; f=\"$d/$h.ndjson\"; mkdir -p \"$(dirname \"$f\")\"; p=$(cat); [ -z \"$p\" ] && p=null; printf \"{\\\"event\\\":\\\"PostToolUse\\\",\\\"ts\\\":%s,\\\"payload\\\":%s}\\n\" \"$(date +%s)\" \"$p\" >> \"$f\"'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'h=\"$HARNESS_TERMINAL_ID\"; [ -z \"$h\" ] && h=\"$CLAUDE_HARNESS_ID\"; [ -z \"$h\" ] && exit 0; d=/tmp/harness-status; f=\"$d/$h.ndjson\"; mkdir -p \"$(dirname \"$f\")\"; p=$(cat); [ -z \"$p\" ] && p=null; printf \"{\\\"event\\\":\\\"Stop\\\",\\\"ts\\\":%s,\\\"payload\\\":%s}\\n\" \"$(date +%s)\" \"$p\" >> \"$f\"'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'h=\"$HARNESS_TERMINAL_ID\"; [ -z \"$h\" ] && h=\"$CLAUDE_HARNESS_ID\"; [ -z \"$h\" ] && exit 0; d=/tmp/harness-status; f=\"$d/$h.ndjson\"; mkdir -p \"$(dirname \"$f\")\"; p=$(cat); [ -z \"$p\" ] && p=null; printf \"{\\\"event\\\":\\\"Notification\\\",\\\"ts\\\":%s,\\\"payload\\\":%s}\\n\" \"$(date +%s)\" \"$p\" >> \"$f\"'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "workflowKeywordTriggerEnabled": false,
   "statusLine": {
     "type": "command",
     "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name'); used=$(echo \"$input\" | jq -r '.context_window.used_percentage // empty'); remaining=$(echo \"$input\" | jq -r '.context_window.remaining_percentage // empty'); total=$(echo \"$input\" | jq -r '.context_window.total_input_tokens'); size=$(echo \"$input\" | jq -r '.context_window.context_window_size'); if [ -n \"$used\" ]; then printf \"%s | tokens: %s / %s (%s%% used, %s%% left)\" \"$model\" \"$total\" \"$size\" \"$(printf '%.0f' \"$used\")\" \"$(printf '%.0f' \"$remaining\")\"; else printf \"%s\" \"$model\"; fi"
+  },
+  "enabledPlugins": {
+    "ponytail@ponytail": true,
+    "caveman@caveman": true,
+    "pulumi@pulumi-agent-skills": true,
+    "figma@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "pulumi-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "pulumi/agent-skills"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
@@ -10,14 +110,41 @@
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
+  "editorMode": "normal",
   "switchModelsOnFlag": false,
+  "showTurnDuration": true,
   "useAutoModeDuringPlan": false,
-  "permissions": {
-    "allow": [
-      "Bash(gh issue view *)",
-      "Bash(gh issue list *)",
-      "Bash(gh pr list *)",
-      "Bash(gh pr view *)"
+  "autoMode": {
+    "soft_deny": [
+      "$defaults",
+      "Bash(pulumi up:*) in apps/cloud-infra — Protected IaC scopes / prod Pulumi stack writes",
+      "make infra-prod-deploy / make infra-prod-preview — prod-namespace IaC targets"
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: AWS (ECS deploy targets, SSM parameters referenced in apps/cloud-infra)",
+      "**Repository visibility**: private (sprout-family/app, confirmed via gh)",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: AWS SSM parameters (provisioned via Pulumi in apps/cloud-infra); CI secrets referenced by name only (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, E2E_ROSTER_SYNC_API_SECRET, E2E_SEED_SERVICE_EMAIL, E2E_SEED_SERVICE_PASSWORD, E2E_SMOKE_PASSWORD, GITHUB_TOKEN, INFRA_APPROVERS_READ_TOKEN, SLACK_INFRA_APPROVAL_WEBHOOK_URL, SLACK_WEBHOOK_URL, SPROUT_APP_API_TOKEN, SSO_E2E_RATE_LIMIT_BYPASS_SECRET)",
+      "**Default / protected branches**: main (default), production — both protected via active `Prod` ruleset (gh-confirmed)",
+      "**CI/CD deploy targets**: AWS ECS via .github/workflows/deploy-app.yml, using checked-in task-definitions (apps/app, apps/admin, apps/jobs, apps/jobs-dashboard) for staging and prod; Pulumi IaC in apps/cloud-infra provisions underlying AWS resources (ECS, databases, SSM)",
+      "**Network posture**: None configured",
+      "**Source control**: sprout-family/app (github.com:sprout-family/app.git) and its remote(s) only",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: sprout-pulumi-state-storage (config-derived — not a confirmed upload destination; uploads of local data still require confirmation)",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: .env.*.local files (gitignored, distributed via team 1Password vault); apps/*/task-definitions/prod.json; apps/cloud-infra/Pulumi.prod.yaml; apps/cloud-infra/src/secrets.ts; any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material — share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment — e.g. apps/*/task-definitions/prod.json, apps/cloud-infra/Pulumi.prod.yaml, `production` branch, `Prod` ruleset scope",
+      "**Protected deployment namespaces / environments**: production/prod ECS targets deployed via .github/workflows/deploy-app.yml (staging vs prod task-definitions); `main` and `production` branches gh-protected via `Prod` ruleset",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources in apps/cloud-infra (Pulumi); anything whose name or tag carries `prod` or `production` as a whole word or name segment (e.g. Pulumi.prod.yaml, infra-prod-deploy/infra-prod-preview Makefile targets)",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development (Sprout Family App monorepo — pnpm + Turbo, KoaJS/React app, Payload CMS admin, Pulumi IaC)",
+      "**Trusted repo**: sprout-family/app (github.com:sprout-family/app.git), the private working tree at /Users/guyllaume/dev/sprout/app-worktrees/feat-remove-oauth-hubspot, and its configured remote — private visibility permits confidential material but secrets/personal data are never cleared by visibility alone",
+      "**Org-specific CLIs**: make (wraps Turbo), hs (HubSpot CLI, apps/hubspot-bridge), pulumi (apps/cloud-infra)",
+      "**routine under apps/cloud-infra/ prefix**: Pulumi preview/plan operations are routine; `pulumi up`/apply and any prod-scoped Pulumi command remain soft-denied per Protected IaC scopes"
     ]
   }
 }

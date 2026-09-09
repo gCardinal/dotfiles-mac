@@ -1,0 +1,2 @@
+- Use ASD-STE100 Simplified Technical English.
+- Do not restore files when I delete them. I have deleted them for a reason.

@@ -5,3 +5,4 @@ install:
 	ln -sf $(shell pwd)/git/.gitconfig ${HOME}/.gitconfig
 	ln -sf $(shell pwd)/starship/starship.toml ${HOME}/.config/starship.toml
 	ln -sf $(shell pwd)/claude/settings.json ${HOME}/.claude/settings.json
+	ln -sf $(shell pwd)/claude/CLAUDE.md ${HOME}/.claude/CLAUDE.md
