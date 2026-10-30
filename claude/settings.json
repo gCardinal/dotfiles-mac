@@ -1,4 +1,9 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "permissions": {
     "allow": [
       "Bash(gh issue view *)",
@@ -73,10 +78,10 @@
     "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name'); used=$(echo \"$input\" | jq -r '.context_window.used_percentage // empty'); remaining=$(echo \"$input\" | jq -r '.context_window.remaining_percentage // empty'); total=$(echo \"$input\" | jq -r '.context_window.total_input_tokens'); size=$(echo \"$input\" | jq -r '.context_window.context_window_size'); if [ -n \"$used\" ]; then printf \"%s | tokens: %s / %s (%s%% used, %s%% left)\" \"$model\" \"$total\" \"$size\" \"$(printf '%.0f' \"$used\")\" \"$(printf '%.0f' \"$remaining\")\"; else printf \"%s\" \"$model\"; fi"
   },
   "enabledPlugins": {
-    "ponytail@ponytail": true,
-    "caveman@caveman": true,
+    "ponytail@ponytail": false,
     "pulumi@pulumi-agent-skills": true,
-    "figma@claude-plugins-official": true
+    "figma@claude-plugins-official": true,
+    "mattpocock-skills@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "ponytail": {
@@ -102,10 +107,21 @@
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
       }
+    },
+    "devfast": {
+      "source": {
+        "source": "github",
+        "repo": "devdotfast/whiteboard"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "high"
+    }
+  },
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
